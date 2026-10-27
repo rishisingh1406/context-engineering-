@@ -1,19 +1,21 @@
-# Context Engineering — Chapter-by-Chapter Summary
+# Context Engineering — Chapter-by-Chapter Notes
 
 ## Chapter 1: Definition of Context Engineering
 
-Context engineering is the discipline of structuring and managing all inputs that influence how an LLM interprets and responds to a task.
-
-**Core objective:** Provide the right information at the right time while balancing relevance, token usage, and cost.
+- **Definition:** Context engineering is the discipline of structuring and managing all inputs that influence how an LLM interprets and responds to a task.
+- **Core objective:** Provide the right information at the right time while balancing relevance, token usage, and cost.
 
 ## Chapter 2: Levels of LLM System Architecture
 
-1. **LLM Calls:** Direct input-output interaction with an LLM.
-2. **AI Workflows:** Predefined steps control task execution.
-3. **AI Agents:** An LLM dynamically selects actions and iterates through an agent loop.
-4. **Agentic Systems:** Multiple agents or components coordinate within a broader runtime.
+- **LLM Calls:** Direct input-output interaction with an LLM.
+- **AI Workflows:** Predefined steps control task execution.
+- **AI Agents:** An LLM dynamically selects actions and iterates through an agent loop.
+- **Agentic Systems:** Multiple agents or components coordinate within a broader runtime.
 
-**Key distinction:** Workflows follow predefined paths; agents can dynamically choose actions.
+### Key Distinction
+
+- **Workflows:** Follow predefined execution paths.
+- **Agents:** Can dynamically choose actions based on the task and available information.
 
 ## Chapter 3: Key Limitations of LLMs
 
@@ -34,33 +36,51 @@ Context engineering is the discipline of structuring and managing all inputs tha
 
 ## Chapter 5: Six Sources of Context
 
-1. **Instructions:** Rules, constraints, and behavioral guidelines.
-2. **External Knowledge:** Information from documents, databases, APIs, and other sources.
-3. **Tools:** Available functions, commands, and tool outputs.
-4. **Memory:** Relevant information retained across interactions.
-5. **State:** Current task, workflow, or environment status.
-6. **User Prompts:** The immediate request, intent, and requirements.
+### 1. Instructions
+- Rules, constraints, and behavioral guidelines.
 
-**Remember:** Context includes more than the prompt. It encompasses everything that influences the model's response.
+### 2. External Knowledge
+- Information from documents, databases, APIs, and other sources.
+
+### 3. Tools
+- Available functions, commands, and tool outputs.
+
+### 4. Memory
+- Relevant information retained across interactions.
+
+### 5. State
+- Current task, workflow, or environment status.
+
+### 6. User Prompts
+- The immediate request, intent, and requirements.
+
+### Key Takeaway
+
+- Context includes more than the prompt.
+- It encompasses everything that influences the model's response.
 
 ## Chapter 6: External Knowledge
 
-External knowledge provides information that may be missing from the LLM's training data or may have changed since training.
+- **Definition:** External knowledge provides information that may be missing from the LLM's training data or may have changed since training.
 
-**Common sources:**
+### Common Sources
+
 - Documents and PDFs
 - Databases and knowledge bases
 - APIs and live data
 - Websites and search engines
 - Knowledge graphs
 
-**Purpose:** Ground LLM responses in relevant, current, domain-specific, or verifiable information.
+### Purpose
+
+- Ground LLM responses in relevant, current, domain-specific, or verifiable information.
 
 ## Chapter 7: Retrieval-Augmented Generation (RAG)
 
-RAG combines information retrieval with LLM generation. It retrieves relevant external information and supplies it to the model as context.
+- **Definition:** RAG combines information retrieval with LLM generation.
+- It retrieves relevant external information and supplies it to the model as context.
 
-### RAG Pipeline
+### 7.1 RAG Pipeline
 
 1. **Indexing:** Load and process documents.
 2. **Chunking:** Split documents into smaller sections.
@@ -71,7 +91,7 @@ RAG combines information retrieval with LLM generation. It retrieves relevant ex
 7. **Generation:** Generate an answer using the query and retrieved context.
 8. **Evaluation:** Measure retrieval quality, faithfulness, correctness, latency, and cost.
 
-### Key Design Choices
+### 7.2 Key Design Choices
 
 - **Chunking:** Controls how information is divided.
 - **Embeddings:** Represent semantic information numerically.
@@ -80,35 +100,42 @@ RAG combines information retrieval with LLM generation. It retrieves relevant ex
 - **Reranking:** Reorders results by relevance.
 - **Metadata Filtering:** Restricts results using attributes such as date or source.
 
-**Key takeaway:** RAG quality depends heavily on retrieving the right information, not merely on the LLM generating a good response.
+### Key Takeaway
+
+- RAG quality depends heavily on retrieving the right information, not merely on the LLM generating a good response.
 
 ## Chapter 8: Knowledge Graphs and Graph RAG
 
-### Knowledge Graphs
+### 8.1 Knowledge Graphs
 
-A knowledge graph represents information through entities and explicit relationships.
+- A knowledge graph represents information through entities and explicit relationships.
 
-Example:
+**Example:**
 
 `Company A → acquired → Company B`
 
-### Graph RAG
+### 8.2 Graph RAG
 
-Graph RAG retrieves relevant entities, relationships, and connected information from a knowledge graph to provide context to an LLM.
+- Graph RAG retrieves relevant entities, relationships, and connected information from a knowledge graph to provide context to an LLM.
 
-**Useful for:**
+### Use Cases
+
 - Multi-hop questions
 - Relationship analysis
 - Connecting information across documents
 - Understanding complex networks of entities
 
-**Trade-off:** Graph construction, entity resolution, and maintenance increase system complexity and cost.
+### Trade-Offs
+
+- Graph construction increases system complexity.
+- Entity resolution can be challenging.
+- Maintaining the graph adds operational cost.
 
 ## Chapter 9: Agentic RAG
 
-Agentic RAG uses an AI agent to dynamically control retrieval instead of relying entirely on a fixed retrieval pipeline.
+- **Definition:** Agentic RAG uses an AI agent to dynamically control retrieval instead of relying entirely on a fixed retrieval pipeline.
 
-### Typical Process
+### 9.1 Typical Process
 
 1. Understand the question.
 2. Plan a retrieval strategy.
@@ -118,37 +145,58 @@ Agentic RAG uses an AI agent to dynamically control retrieval instead of relying
 6. Search again if necessary.
 7. Synthesize the evidence into an answer.
 
-**Useful for:** Complex research, multi-source investigation, and tasks requiring iterative searches.
+### 9.2 Use Cases
 
-**Trade-off:** Greater flexibility can introduce additional latency, token costs, tool failures, and reasoning errors.
+- Complex research
+- Multi-source investigation
+- Tasks requiring iterative searches
 
-**Decision rule:** Use agentic retrieval when adaptive search decisions provide enough value to justify the added complexity.
+### 9.3 Trade-Offs
+
+- Additional latency
+- Higher token costs
+- Potential tool failures
+- Increased risk of reasoning errors
+
+### Decision Rule
+
+- Use agentic retrieval when adaptive search decisions provide enough value to justify the added complexity.
 
 ## Chapter 10: Vectorless RAG
 
-Vectorless RAG retrieves information without depending on embedding-based vector similarity.
+- **Definition:** Vectorless RAG retrieves information without depending on embedding-based vector similarity.
 
-It can use:
+### 10.1 Retrieval Methods
+
 - Document hierarchies
 - Headings and tables of contents
 - Metadata and document identifiers
 - Keywords and structural relationships
 
-Example:
+**Example:**
 
 `Document → Chapter → Section → Subsection`
 
-**Useful for:** Structured documents, exact lookups, and workloads where document structure provides reliable retrieval signals.
+### 10.2 Use Cases
 
-**Trade-off:** It may struggle when relevant information is expressed using different wording or spread across unrelated sections.
+- Structured documents
+- Exact lookups
+- Workloads where document structure provides reliable retrieval signals
 
-**Key takeaway:** Vectorless retrieval uses document structure or other non-vector methods instead of relying on embeddings.
+### 10.3 Trade-Offs
+
+- May struggle when relevant information is expressed using different wording.
+- May struggle when information is distributed across unrelated sections.
+
+### Key Takeaway
+
+- Vectorless retrieval uses document structure or other non-vector methods instead of relying on embeddings.
 
 ## Chapter 11: Cache-Augmented Generation (CAG)
 
-CAG reduces repeated retrieval work by preparing knowledge context in advance and, in supported implementations, reusing the model's key-value (KV) cache.
+- **Definition:** CAG reduces repeated retrieval work by preparing knowledge context in advance and, in supported implementations, reusing the model's key-value (KV) cache.
 
-### Typical Process
+### 11.1 Typical Process
 
 1. Load a known knowledge collection.
 2. Prepare the context in advance.
@@ -156,80 +204,138 @@ CAG reduces repeated retrieval work by preparing knowledge context in advance an
 4. Reuse the prepared context or KV cache when supported.
 5. Generate responses without repeating the entire retrieval process.
 
-**Useful for:**
+### 11.2 Use Cases
+
 - Stable knowledge collections
 - Repeated queries over the same information
 - Workloads where retrieval latency is a bottleneck
 
-**Trade-off:** Large contexts consume memory, and knowledge updates require careful cache management.
+### 11.3 Trade-Offs
 
-**Important:** CAG does not permanently teach the model new knowledge. It makes prepared context or cached computation reusable.
+- Large contexts consume memory.
+- Knowledge updates require careful cache management.
+
+### Important Note
+
+- CAG does not permanently teach the model new knowledge.
+- It makes prepared context or cached computation reusable.
 
 ## Chapter 12: Context Stuffing
 
-Context stuffing places the entire relevant document or a large portion of it directly into the LLM's context window instead of first retrieving selected chunks.
+- **Definition:** Context stuffing places the entire relevant document, or a large portion of it, directly into the LLM's context window instead of first retrieving selected chunks.
 
-### Typical Process
+### 12.1 Typical Process
 
 1. Load the document.
 2. Convert it into a model-readable format.
 3. Insert the content into the prompt.
 4. Ask the LLM to analyze the supplied information.
 
-**Useful for:**
+### 12.2 Use Cases
+
 - Short documents
 - Small document collections
 - Tasks requiring a broad view of the source
 - Prototypes where a retrieval pipeline is unnecessary
 
-**Trade-offs:**
+### 12.3 Trade-Offs
+
 - Higher input-token consumption
 - Potentially higher latency and cost
 - Context-window limitations
 - Risk of important information being overlooked
 
-**Decision rule:** Use context stuffing when the relevant material fits comfortably within the context window and the cost is acceptable.
+### Decision Rule
+
+- Use context stuffing when the relevant material fits comfortably within the context window and the cost is acceptable.
 
 ## Chapter 13: Comparison of External Knowledge Approaches
 
-| Approach | Core mechanism | Best suited for |
-|---|---|---|
-| Traditional RAG | Retrieves relevant document chunks | Large knowledge bases |
-| Graph RAG | Traverses entities and relationships | Relationship-heavy questions |
-| Agentic RAG | Dynamically plans and executes retrieval | Complex research |
-| Vectorless RAG | Uses structure, metadata, or keywords | Structured documents |
-| CAG | Reuses prepared knowledge context or cached computation | Repeated queries over stable knowledge |
-| Context Stuffing | Loads the full relevant source into the prompt | Small document collections |
+### 13.1 Traditional RAG
 
-These approaches are not mutually exclusive. A production system can combine retrieval, graph traversal, caching, and metadata filtering.
+- **Core mechanism:** Retrieves relevant document chunks.
+- **Best suited for:** Large knowledge bases.
+
+### 13.2 Graph RAG
+
+- **Core mechanism:** Traverses entities and relationships.
+- **Best suited for:** Relationship-heavy questions.
+
+### 13.3 Agentic RAG
+
+- **Core mechanism:** Dynamically plans and executes retrieval.
+- **Best suited for:** Complex research.
+
+### 13.4 Vectorless RAG
+
+- **Core mechanism:** Uses structure, metadata, or keywords.
+- **Best suited for:** Structured documents.
+
+### 13.5 Cache-Augmented Generation (CAG)
+
+- **Core mechanism:** Reuses prepared knowledge context or cached computation.
+- **Best suited for:** Repeated queries over stable knowledge.
+
+### 13.6 Context Stuffing
+
+- **Core mechanism:** Loads the full relevant source into the prompt.
+- **Best suited for:** Small document collections.
+
+### Key Takeaway
+
+- These approaches are not mutually exclusive.
+- A production system can combine retrieval, graph traversal, caching, and metadata filtering.
 
 ## Chapter 14: Choosing the Right Approach
 
-- **Traditional RAG:** Choose when the knowledge base is large and only relevant subsets should enter the context.
-- **Graph RAG:** Choose when relationships between entities are essential.
-- **Agentic RAG:** Choose when retrieval requires dynamic decisions and multiple searches.
-- **Vectorless RAG:** Choose when document structure or metadata supports reliable retrieval.
-- **CAG:** Choose when knowledge is stable and repeated queries make context reuse beneficial.
-- **Context Stuffing:** Choose when the relevant source is small enough to include directly.
+### 14.1 Traditional RAG
 
-Evaluate each design using:
-- Answer quality and faithfulness
-- Retrieval accuracy
-- Data freshness
-- Context-window usage
-- Latency
-- Inference and infrastructure cost
-- Operational complexity
+- Choose when the knowledge base is large and only relevant subsets should enter the context.
+
+### 14.2 Graph RAG
+
+- Choose when relationships between entities are essential.
+
+### 14.3 Agentic RAG
+
+- Choose when retrieval requires dynamic decisions and multiple searches.
+
+### 14.4 Vectorless RAG
+
+- Choose when document structure or metadata supports reliable retrieval.
+
+### 14.5 Cache-Augmented Generation (CAG)
+
+- Choose when knowledge is stable and repeated queries make context reuse beneficial.
+
+### 14.6 Context Stuffing
+
+- Choose when the relevant source is small enough to include directly.
+
+### 14.7 Evaluation Criteria
+
+Evaluate each approach using the following criteria:
+
+- **Answer Quality and Faithfulness:** Does the response accurately reflect the available evidence?
+- **Retrieval Accuracy:** Does the system retrieve the relevant information?
+- **Data Freshness:** Is the information sufficiently up to date?
+- **Context-Window Usage:** How much context does the model need?
+- **Latency:** How long does the system take to respond?
+- **Inference and Infrastructure Cost:** What are the computational and operational costs?
+- **Operational Complexity:** How difficult is the system to deploy, maintain, and debug?
 
 ## Final Chapter: Key Takeaways
 
-1. Context engineering is about selecting and organizing the right information, not simply adding more context.
-2. An LLM's output depends on the instructions, knowledge, tools, memory, state, and prompt available to it.
-3. RAG retrieves relevant external information to ground generation.
-4. Graph RAG uses relationships; Agentic RAG adapts retrieval dynamically.
-5. Vectorless RAG uses non-vector retrieval mechanisms.
-6. CAG reduces repeated work through prepared context or reusable cached computation.
-7. Context stuffing supplies the full relevant source directly when practical.
-8. No single approach is best for every application.
+- Context engineering is about selecting and organizing the right information, not simply adding more context.
+- An LLM's output depends on the instructions, knowledge, tools, memory, state, and prompt available to it.
+- RAG retrieves relevant external information to ground generation.
+- Graph RAG uses relationships between entities.
+- Agentic RAG adapts retrieval dynamically.
+- Vectorless RAG uses non-vector retrieval mechanisms.
+- CAG reduces repeated work through prepared context or reusable cached computation.
+- Context stuffing supplies the full relevant source directly when practical.
+- No single approach is best for every application.
 
-**Core principle:** Provide sufficient, relevant, trustworthy context while balancing quality, latency, cost, and system complexity.
+### Core Principle
+
+> Provide sufficient, relevant, and trustworthy context while balancing response quality, latency, cost, and system complexity.
