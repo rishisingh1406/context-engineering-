@@ -1,10 +1,10 @@
 # Context Engineering — Quick Reference
 
-A concise reference to context engineering, retrieval strategies, and LLM system design.
+A concise reference covering context engineering, retrieval strategies, and LLM system design.
 
 ## 1. Definition
 
-**Context engineering** is the discipline of selecting, structuring, and managing the information supplied to an LLM at each step.
+**Context Engineering** is the discipline of selecting, structuring, and managing the information supplied to an LLM at each step.
 
 **Goal:** Maximize answer quality and reliability while controlling token usage, latency, cost, and complexity.
 
@@ -60,7 +60,7 @@ RAG retrieves external information and supplies it to an LLM to improve groundin
 
 Indexing → Chunking → Embedding → Storage → Retrieval → Context Construction → Generation → Evaluation
 
-**Key design decisions:**
+**Key Design Decisions:**
 - Chunk size and overlap
 - Embedding model
 - Vector database and indexing strategy
@@ -68,7 +68,7 @@ Indexing → Chunking → Embedding → Storage → Retrieval → Context Constr
 - Metadata filtering and reranking
 - Context assembly and citation handling
 
-**Key insight:** Strong generation cannot reliably compensate for missing or irrelevant evidence.
+**Key Insight:** Strong generation cannot reliably compensate for missing or irrelevant evidence.
 
 ## 8. Knowledge Graphs and Graph RAG
 
@@ -89,7 +89,7 @@ Understand → Plan → Retrieve → Evaluate Evidence → Refine Search → Syn
 
 - **Best suited for:** Complex research requiring multiple sources or iterative searches.
 - **Trade-offs:** Higher latency, token cost, and potential failure risk.
-- **Design principle:** Use adaptive retrieval only when its quality improvements justify the overhead.
+- **Design Principle:** Use adaptive retrieval only when its quality improvements justify the overhead.
 
 ## 10. Vectorless RAG
 
