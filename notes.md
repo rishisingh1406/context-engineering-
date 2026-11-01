@@ -1,14 +1,16 @@
-# CONTEXT ENGINEERING — QUICK REFERENCE
+# CONTEXT ENGINEERING — TECHNICAL REFERENCE
 
-A practical reference covering context engineering, retrieval architectures, and production LLM system design.
+**Topics:** LLM System Design · Context Engineering · Retrieval Architectures · Production AI Systems
 
 ---
 
-## 1. DEFINITION
+# 1. FOUNDATION
 
-**Context Engineering** is the discipline of selecting, structuring, managing, and delivering the right information to an LLM at each stage of execution.
+## 1.1 What is Context Engineering?
 
-**Primary Goal:**
+Context Engineering is the discipline of selecting, structuring, managing, and delivering the right information to an LLM at each stage of execution.
+
+**Primary Objective:**
 
 Maximize answer quality and system reliability while optimizing:
 
@@ -20,162 +22,71 @@ Maximize answer quality and system reliability while optimizing:
 
 **Core Idea:** The quality of an LLM system depends not only on the model but also on the quality of the context supplied to it.
 
----
+## 1.2 LLM System Architecture
 
-## 2. LLM SYSTEM ARCHITECTURE
+LLM-based systems can be divided into four categories:
 
-LLM-based systems can be organized into four broad categories.
+| Category | Description | Best Suited For |
+|---|---|---|
+| LLM Calls | Direct input-output interactions | Straightforward tasks |
+| Workflows | Predetermined sequences of operations | Predictable tasks |
+| Agents | Dynamically select tools and actions | Flexible decision-making |
+| Agentic Systems | Coordinate agents, workflows, tools and memory | Complex objectives |
 
-### 1. LLM Calls
-- Direct input-output interactions.
-- The application controls the request and processes the response.
-- Suitable for straightforward tasks.
+**Design Principle:** Prefer deterministic workflows wherever possible. Introduce autonomous decision-making only when necessary.
 
-### 2. Workflows
-- Execute predefined sequences of operations.
-- Follow predetermined control flow.
-- Suitable for predictable and repeatable tasks.
+## 1.3 LLM Limitations
 
-### 3. Agents
-- Dynamically decide which actions or tools to use.
-- Adapt their execution based on intermediate results.
-- Suitable for tasks requiring flexible decision-making.
-
-### 4. Agentic Systems
-- Combine LLMs, agents, workflows, tools, memory, and supporting infrastructure.
-- Coordinate multiple components to accomplish complex objectives.
-
-**Design Principle:** Use deterministic workflows wherever possible. Introduce autonomous decision-making only when the task requires it.
+| Limitation | Description |
+|---|---|
+| Hallucinations | Plausible but factually incorrect outputs |
+| Stale Knowledge | Pretrained knowledge may not reflect recent developments |
+| Context Limits | Finite context windows and increasing token costs |
+| Information Integrity | Retrieved information may be incomplete or contradictory |
+| Safety and Bias | Outputs may contain unsafe or biased information |
 
 ---
 
-## 3. LLM LIMITATIONS
+# 2. THE SIX SOURCES OF CONTEXT
 
-Understanding model limitations is essential when designing reliable AI systems.
+Context is not limited to retrieved documents. It consists of six major information sources.
 
-### 1. Hallucinations
-- Generate plausible but factually incorrect information.
-- May present unsupported claims with confidence.
+| Source | Purpose | Examples |
+|---|---|---|
+| Instructions | Define behavior and constraints | System prompts, policies, schemas |
+| External Knowledge | Supply factual information | Documents, databases, APIs |
+| Tools | Enable external actions | Python, web search, APIs |
+| Memory | Retain useful information | Preferences, previous decisions |
+| State | Track execution status | Workflow step, retries, pending tasks |
+| User Prompts | Express user intent | Questions, goals, constraints |
 
-### 2. Stale Knowledge
-- Pretrained knowledge may not reflect recent developments.
-- External retrieval is necessary when current information matters.
+**Important Distinction:**
 
-### 3. Context Limits
-- Models have finite context windows.
-- Large inputs can increase cost and latency.
-- Important information may be overlooked or lost in long contexts.
-
-### 4. Information Integrity
-- Retrieved information may be incomplete, outdated, contradictory, or untrusted.
-- Incorrect source material can produce incorrect answers.
-
-### 5. Safety and Bias
-- Outputs may contain unsafe instructions or biased information.
-- Systems need appropriate validation and safeguards.
+- Memory represents information retained across interactions.
+- State represents the current execution status.
+- External knowledge provides information from outside the model.
 
 ---
 
-## 4. BENEFITS OF CONTEXT ENGINEERING
+# 3. EXTERNAL KNOWLEDGE AND RETRIEVAL
 
-Effective context engineering helps:
-
-- Improve grounding and reduce avoidable hallucinations.
-- Increase task-specific consistency and reliability.
-- Optimize token consumption, latency, and inference cost.
-- Organize instructions, memory, tools, and workflow state.
-- Improve evaluation, observability, and debugging.
-- Control which information reaches the model and when.
-
----
-
-## 5. SIX SOURCES OF CONTEXT
-
-Context is not limited to retrieved documents. It consists of multiple information sources.
-
-### 1. Instructions
-**Purpose:** Define rules, behavior, and constraints.
-
-Examples:
-- System prompts
-- Developer instructions
-- Policies
-- Output schemas
-
-### 2. External Knowledge
-**Purpose:** Supply factual information unavailable or insufficiently represented in model knowledge.
-
-Examples:
-- Documents
-- Databases
-- APIs
-- Websites
-- Knowledge graphs
-
-### 3. Tools
-**Purpose:** Enable external actions, computation, and information retrieval.
-
-Examples:
-- Web search
-- Python execution
-- Database queries
-- External APIs
-
-### 4. Memory
-**Purpose:** Retain useful information across interactions.
-
-Examples:
-- User preferences
-- Previous decisions
-- Historical interactions
-- Long-term project information
-
-### 5. State
-**Purpose:** Track the current execution status of a system.
-
-Examples:
-- Current workflow step
-- Execution history
-- Retry count
-- Pending tasks
-- Intermediate results
-
-### 6. User Prompts
-**Purpose:** Express the user's intent and requirements.
-
-Examples:
-- Questions
-- Goals
-- Constraints
-- Task-specific instructions
-
----
-
-## 6. EXTERNAL KNOWLEDGE
-
-**Definition:**
+## 3.1 External Knowledge
 
 External knowledge provides information that may be missing, incomplete, or outdated in the model's pretrained knowledge.
 
-### Common Sources
+**Common Sources:**
+
 - Documents and files
 - Relational databases
 - APIs
 - Websites
 - Knowledge graphs
 
-### Primary Objective
-Supply relevant, current, and verifiable information to improve the accuracy and grounding of model responses.
+**Objective:** Supply relevant, current, and verifiable information to improve response accuracy and grounding.
 
-**Important:** External knowledge is only useful when the system retrieves relevant information and preserves its source integrity.
+## 3.2 Retrieval-Augmented Generation (RAG)
 
----
-
-## 7. RETRIEVAL-AUGMENTED GENERATION (RAG)
-
-**Definition:**
-
-RAG is an architecture that retrieves relevant external information and supplies it to an LLM as additional context before generation.
+**Definition:** RAG retrieves relevant external information and supplies it to an LLM as additional context before generation.
 
 ### RAG Pipeline
 
@@ -194,8 +105,8 @@ RAG is an architecture that retrieves relevant external information and supplies
 ### Key Architectural Decisions
 
 - Chunk size and overlap
-- Embedding model selection
-- Vector database selection
+- Embedding model
+- Vector database
 - Indexing strategy
 - Retrieval method
 - Top-K selection
@@ -205,38 +116,36 @@ RAG is an architecture that retrieves relevant external information and supplies
 - Context assembly
 - Citation handling
 
-### Key Insight
-
-Strong generation cannot reliably compensate for missing, irrelevant, or incorrect evidence.
-
-Retrieval quality directly influences the quality of grounded responses.
+**Key Insight:** Strong generation cannot reliably compensate for missing, irrelevant, or incorrect evidence. Retrieval quality directly influences grounded response quality.
 
 ---
 
-## 8. KNOWLEDGE GRAPHS AND GRAPH RAG
+# 4. ADVANCED RETRIEVAL ARCHITECTURES
+
+## 4.1 Knowledge Graphs and Graph RAG
 
 ### Knowledge Graph
 
 A knowledge graph represents information through entities and their relationships.
 
-It typically consists of:
+Its components:
 
-- Nodes: Entities or concepts.
-- Edges: Relationships between entities.
-- Properties: Attributes associated with nodes or edges.
+- Nodes — Entities or concepts.
+- Edges — Relationships between entities.
+- Properties — Attributes associated with nodes or edges.
 
 ### Graph RAG
 
-Graph RAG uses graph structures and relationships to retrieve relevant information and support LLM generation.
+Graph RAG uses graph structures and relationships to retrieve information and support LLM generation.
 
-### Best Suited For
+**Best Suited For:**
 
 - Multi-hop questions
 - Relationship analysis
 - Connected knowledge exploration
-- Questions involving relationships across multiple entities
+- Questions involving multiple related entities
 
-### Trade-offs
+**Trade-offs:**
 
 - Graph construction complexity
 - Entity resolution
@@ -244,17 +153,13 @@ Graph RAG uses graph structures and relationships to retrieve relevant informati
 - Ongoing maintenance
 - Additional storage and query complexity
 
-**Key Insight:** Graph-based retrieval is valuable when relationships between information are important, not simply because a graph is a more advanced data structure.
+**Design Principle:** Use graph-based retrieval when relationships between information matter, not simply because graphs are more advanced.
 
----
+## 4.2 Agentic RAG
 
-## 9. AGENTIC RAG
+**Definition:** Agentic RAG uses an agent to dynamically plan, execute, evaluate, and refine retrieval operations instead of relying exclusively on a fixed retrieval pipeline.
 
-**Definition:**
-
-Agentic RAG uses an agent to dynamically plan, execute, evaluate, and refine retrieval operations instead of relying exclusively on a fixed retrieval pipeline.
-
-### Typical Process
+### Typical Execution
 
 1. Understand the Query
 2. Plan Retrieval
@@ -262,16 +167,16 @@ Agentic RAG uses an agent to dynamically plan, execute, evaluate, and refine ret
 4. Evaluate Retrieved Evidence
 5. Identify Information Gaps
 6. Refine or Repeat Retrieval
-7. Synthesize the Final Response
+7. Synthesize Final Response
 
-### Best Suited For
+**Best Suited For:**
 
 - Complex research tasks
 - Multi-source information analysis
-- Questions requiring iterative searches
-- Tasks where the retrieval strategy depends on intermediate results
+- Iterative searches
+- Tasks where retrieval strategy depends on intermediate results
 
-### Trade-offs
+**Trade-offs:**
 
 - Higher latency
 - Higher token consumption
@@ -281,13 +186,9 @@ Agentic RAG uses an agent to dynamically plan, execute, evaluate, and refine ret
 
 **Design Principle:** Use adaptive retrieval only when its improvement in answer quality justifies the additional operational overhead.
 
----
+## 4.3 Vectorless Retrieval
 
-## 10. VECTORLESS RETRIEVAL
-
-**Definition:**
-
-Vectorless retrieval refers to approaches that retrieve information without relying primarily on embedding-based vector similarity.
+**Definition:** Retrieval approaches that do not rely primarily on embedding-based vector similarity.
 
 ### Common Methods
 
@@ -300,7 +201,7 @@ Vectorless retrieval refers to approaches that retrieve information without rely
 - SQL queries
 - Deterministic lookups
 
-### Best Suited For
+**Best Suited For:**
 
 - Exact identifiers
 - Structured documents
@@ -308,20 +209,16 @@ Vectorless retrieval refers to approaches that retrieve information without rely
 - Specific values and dates
 - Predictable information lookups
 
-### Limitations
+**Limitations:**
 
 - May miss semantically related information expressed using different terminology.
 - Keyword matching alone may not capture contextual meaning.
 
 **Key Insight:** Vectorless retrieval and vector-based retrieval can complement each other through hybrid search.
 
----
+## 4.4 Cache-Augmented Generation (CAG)
 
-## 11. CACHE-AUGMENTED GENERATION (CAG)
-
-**Definition:**
-
-Cache-Augmented Generation refers to approaches that prepare or reuse knowledge and computation to reduce repeated processing during LLM inference.
+**Definition:** Approaches that prepare or reuse knowledge and computation to reduce repeated processing during LLM inference.
 
 ### Common Implementations
 
@@ -331,19 +228,19 @@ Cache-Augmented Generation refers to approaches that prepare or reuse knowledge 
 - Cached retrieval results
 - Cached intermediate computation
 
-### Best Suited For
+**Best Suited For:**
 
 - Repeated queries over stable knowledge
 - Applications with recurring prompt structures
 - Workloads where repeated context processing creates unnecessary overhead
 
-### Benefits
+**Benefits:**
 
 - Reduces repeated retrieval or prefill work.
 - Can improve response latency.
 - Reduces redundant computation.
 
-### Trade-offs
+**Trade-offs:**
 
 - Memory consumption
 - Cache invalidation
@@ -351,34 +248,26 @@ Cache-Augmented Generation refers to approaches that prepare or reuse knowledge 
 - Cache consistency
 - Implementation complexity
 
-**Important Distinction:**
+**Important Distinction:** Caching does not permanently teach the model new knowledge or modify its model weights. The cache stores reusable context or computation rather than updating the underlying model.
 
-Caching does not permanently teach the model new knowledge or modify its model weights.
+## 4.5 Context Stuffing
 
-The cache stores reusable context or computation rather than updating the underlying model.
+**Definition:** Supplying the entire relevant document or information source directly to the model rather than retrieving selected chunks.
 
----
-
-## 12. CONTEXT STUFFING
-
-**Definition:**
-
-Context stuffing is an approach where the entire relevant document or information source is supplied directly to the model rather than retrieving selected chunks.
-
-### Best Suited For
+**Best Suited For:**
 
 - Short documents
 - Whole-document analysis
 - Broad summarization
 - Tasks requiring document-wide context
 
-### Benefits
+**Benefits:**
 
 - Preserves broader document context.
 - Avoids some retrieval misses.
 - Reduces the need for complex retrieval infrastructure.
 
-### Trade-offs
+**Trade-offs:**
 
 - Higher token consumption
 - Increased inference cost
@@ -386,24 +275,22 @@ Context stuffing is an approach where the entire relevant document or informatio
 - Context-window pressure
 - Potential distraction from irrelevant information
 
-**Key Insight:** Supplying more information does not automatically improve answer quality. Relevance and information organization remain important.
+**Key Insight:** More information does not automatically improve answer quality. Relevance and information organization remain important.
 
 ---
 
-## 13. COMPARISON OF RETRIEVAL APPROACHES
+# 5. RETRIEVAL ARCHITECTURE COMPARISON
 
 | Approach | Mechanism | Suitable Use Case |
 |---|---|---|
 | Traditional RAG | Retrieves relevant chunks | Large knowledge bases |
 | Graph RAG | Uses entities and relationships | Multi-hop reasoning |
 | Agentic RAG | Dynamically plans retrieval | Complex research |
-| Vectorless Retrieval | Uses keywords, structure, and metadata | Exact and structured lookups |
-| CAG | Reuses prepared context or cached computation | Repeated queries over stable context |
-| Context Stuffing | Supplies the entire relevant source | Small documents and whole-document analysis |
+| Vectorless Retrieval | Keywords, structure and metadata | Exact lookups |
+| CAG | Reuses context or computation | Repeated queries |
+| Context Stuffing | Supplies entire relevant source | Small documents |
 
-### Important Note
-
-These approaches are not mutually exclusive.
+**Important Note:** These approaches are not mutually exclusive.
 
 A production system can combine multiple retrieval strategies depending on:
 
@@ -416,13 +303,13 @@ A production system can combine multiple retrieval strategies depending on:
 
 ---
 
-## 14. CHOOSING THE RIGHT APPROACH
+# 6. CHOOSING THE RIGHT ARCHITECTURE
 
 Architecture selection should begin with the actual requirements of the task.
 
 | Requirement | Starting Approach |
 |---|---|
-| Search a large document collection | Traditional RAG |
+| Search large document collections | Traditional RAG |
 | Answer relationship-heavy questions | Graph RAG |
 | Research across multiple sources adaptively | Agentic RAG |
 | Find exact values or structured sections | Vectorless Retrieval |
@@ -437,75 +324,50 @@ Benchmark alternative approaches against representative queries before committin
 
 ---
 
-## 15. EVALUATION CRITERIA
+# 7. EVALUATION AND RELIABILITY
 
-A context engineering system should be evaluated across multiple dimensions.
+A context engineering system should be evaluated across seven dimensions.
 
-### 1. Answer Quality
-- Correctness
-- Relevance
-- Completeness
+| Dimension | What to Evaluate |
+|---|---|
+| Answer Quality | Correctness, relevance, completeness |
+| Faithfulness | Whether claims are supported by evidence |
+| Retrieval Quality | Recall, precision, ranking effectiveness |
+| Freshness | Whether information reflects current data |
+| Efficiency | Tokens, latency, inference cost |
+| Reliability | Missing information, conflicting sources, failures |
+| Operational Complexity | Maintenance, observability, monitoring, scalability |
 
-### 2. Faithfulness
-- Whether generated claims are supported by available evidence.
-- Whether the response introduces unsupported information.
+### Evaluation Questions
 
-### 3. Retrieval Quality
-- Recall
-- Precision
-- Ranking effectiveness
-- Context relevance
+Before deploying a system, ask:
 
-### 4. Freshness
-- Whether retrieved information reflects current data.
-- Whether outdated information is identified or excluded.
-
-### 5. Efficiency
-- Token consumption
-- End-to-end latency
-- Inference cost
-- Cost per successful task
-
-### 6. Reliability
-- Behavior under missing information.
-- Handling conflicting sources.
-- Handling malformed inputs.
-- Recovery from retrieval and tool failures.
-
-### 7. Operational Complexity
-- Maintenance requirements
-- Observability
-- Monitoring
-- Failure handling
-- Scalability
+1. Does the system retrieve the correct information?
+2. Does the LLM generate answers grounded in retrieved evidence?
+3. Can the system identify missing or conflicting information?
+4. Does it handle malformed inputs?
+5. What happens when retrieval or tools fail?
+6. What is the cost per successful task?
+7. Can failures be traced and debugged?
 
 ---
 
-## 16. FINAL TAKEAWAYS
+# 8. FINAL TAKEAWAYS
 
 1. Context engineering determines what information the model receives, how it is organized, and when it is supplied.
-
 2. Context includes instructions, external knowledge, tools, memory, state, and user prompts.
-
 3. Different retrieval architectures solve different information-access problems.
-
-4. More context is not necessarily better. Relevance, quality, and organization matter more than raw context volume.
-
+4. More context is not necessarily better. Relevance and organization matter more than raw volume.
 5. No single retrieval architecture is optimal for every workload.
-
-6. Deterministic retrieval and workflows should be preferred when they adequately solve the problem.
-
-7. Adaptive retrieval and agentic behavior should be introduced when their benefits justify their additional complexity.
-
-8. Caching can reduce repeated computation but introduces invalidation and freshness challenges.
-
+6. Prefer deterministic retrieval and workflows when they adequately solve the problem.
+7. Introduce adaptive retrieval and agentic behavior when their benefits justify additional complexity.
+8. Caching reduces repeated computation but introduces invalidation and freshness challenges.
 9. Evaluation must cover answer quality, faithfulness, retrieval performance, efficiency, and reliability.
-
 10. Production architecture decisions should be driven by measurable results rather than architectural complexity.
 
 ---
 
-## CORE PRINCIPLE
+# CORE PRINCIPLE
 
 > Provide the most relevant and trustworthy context for the task while balancing answer quality, latency, cost, and operational complexity.
 
